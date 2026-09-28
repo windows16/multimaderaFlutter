@@ -7,12 +7,11 @@ class ApiClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.baseUrl,
-        connectTimeout: const Duration(seconds: 10),
-        receiveTimeout: const Duration(seconds: 10),
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
       ),
     );
 
-    // Interceptor: mete el JWT de Supabase en cada request a TU API Express
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
@@ -21,11 +20,6 @@ class ApiClient {
             options.headers['Authorization'] = 'Bearer ${session.accessToken}';
           }
           return handler.next(options);
-        },
-        onError: (error, handler) {
-          // Si tu middleware rechaza el token (401), Supabase igual
-          // maneja el refresh automático por su lado en la mayoría de casos.
-          return handler.next(error);
         },
       ),
     );

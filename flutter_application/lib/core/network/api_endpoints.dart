@@ -1,9 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiEndpoints {
-  static const baseUrl =
-      'https://apimultimaderav1.onrender.com/api/multimadera/v1';
-  static const baseUrlDev = 'http://localhost:3000/api/multimadera/v1';
+  static String get baseUrl => dotenv.get('BASE_URL');
+  static String get baseUrlDev => dotenv.get('BASE_URL_DEV');
 
   static const clientes = '/clientes';
+  static const tiposCliente = '/tipos-cliente';
   static const pedidos = '/pedidos';
   static const materiales = '/materiales';
 }
