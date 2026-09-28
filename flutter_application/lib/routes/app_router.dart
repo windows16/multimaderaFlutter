@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'route_names.dart';
 import '../core/widgets/home_screen.dart';
 import '../core/widgets/login_screen.dart';
+import '../features/clientes/presentation/clientes_screen.dart';
 
 // Adaptador: convierte un Stream en un Listenable que go_router entiende
 class GoRouterRefreshStream extends ChangeNotifier {
@@ -52,7 +53,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.home,
         builder: (context, state) => const HomeScreen(),
       ),
-      // ... resto de tus rutas
+      GoRoute(
+        path: AppRoutes.clientes,
+        builder: (context, state) => const ClientesScreen(),
+      ),
     ],
   );
 });
