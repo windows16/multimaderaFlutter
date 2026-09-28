@@ -50,14 +50,47 @@ class _ClientesScreenState extends ConsumerState<ClientesScreen> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: TextField(
                 controller: _searchController,
                 onChanged: (_) => setState(() {}),
-                decoration: const InputDecoration(
-                  labelText: 'Buscar',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: _tab == 0
+                      ? 'Buscar por nombre o teléfono'
+                      : 'Buscar por descripción',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchController.text.isEmpty
+                      ? null
+                      : IconButton(
+                          tooltip: 'Limpiar búsqueda',
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {});
+                          },
+                        ),
+                  filled: true,
+                  fillColor: Theme.of(context)
+                      .colorScheme
+                      .surfaceContainerHighest
+                      .withValues(alpha: 0.45),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 1.5,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
                 ),
               ),
             ),
@@ -105,8 +138,25 @@ class _ClientesScreenState extends ConsumerState<ClientesScreen> {
               leading:
                   CircleAvatar(child: Text(cliente.nombre[0].toUpperCase())),
               title: Text(cliente.nombre),
-              subtitle: Text(
-                  'tel: ${cliente.telefono}\n${cliente.tipoCliente ?? cliente.idTipoCliente}'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone,
+                        size: 16,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      Text('${cliente.telefono}'),
+                    ],
+                  ),
+                  Text(
+                    '${cliente.tipoCliente ?? cliente.idTipoCliente}',
+                  ),
+                ],
+              ),
               isThreeLine: true,
               trailing: PopupMenuButton<String>(
                 onSelected: (value) {
